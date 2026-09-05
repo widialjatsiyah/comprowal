@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:root {
+    --ink: #263238;
+    --muted: #68777b;
+    --paper: #f4f7f6;
+    --signal: #18a999;
+    --mint: #d8f0eb;
+    --line: rgba(38, 50, 56, 0.15);
+}
+
+@layer base {
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', ui-sans-serif, sans-serif; }
+}
+
+@layer components {
+    .site-shell { background-image: linear-gradient(rgba(38, 50, 56, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(38, 50, 56, .045) 1px, transparent 1px); background-size: 42px 42px; }
+    .display-font { font-family: 'Space Grotesk', ui-sans-serif, sans-serif; }
+    .reveal { animation: rise-in .7s cubic-bezier(.22, .8, .25, 1) both; }
+    .reveal-delay { animation-delay: .12s; }
+    .testimonial-track { display: flex; width: max-content; gap: 1.5rem; animation: testimonial-slide 32s linear infinite; }
+    .testimonial-carousel:hover .testimonial-track { animation-play-state: paused; }
+    .testimonial-card { width: min(78vw, 26rem); flex: 0 0 min(78vw, 26rem); }
+    @keyframes testimonial-slide { from { transform: translateX(0); } to { transform: translateX(calc(-50% - .75rem)); } }
+    .project-track { display: flex; width: max-content; gap: 1.5rem; animation: project-slide 28s linear infinite; }
+    .project-carousel:hover .project-track { animation-play-state: paused; }
+    .project-card { width: min(82vw, 34rem); flex: 0 0 min(82vw, 34rem); }
+    @keyframes project-slide { from { transform: translateX(0); } to { transform: translateX(calc(-50% - .75rem)); } }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .testimonial-track, .project-track, .reveal { animation: none; }
+}
