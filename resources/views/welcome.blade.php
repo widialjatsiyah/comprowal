@@ -12,9 +12,9 @@
         <meta property="og:title" content="{{ $company->seo_title ?: $company->company_name }}">
         <meta property="og:description" content="{{ $company->seo_description ?: $company->description }}">
         <meta property="og:url" content="{{ route('home') }}">
-        @if ($company->seo_image)<meta property="og:image" content="{{ Storage::disk('public')->url($company->seo_image) }}">@endif
+        @if ($company->seo_image)<meta property="og:image" content="{{ asset('storage/'.$company->seo_image) }}">@endif
         <meta name="twitter:card" content="summary_large_image">
-        <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => $company->company_name, 'description' => $company->seo_description ?: $company->description, 'url' => route('home'), 'logo' => $company->logo_path ? Storage::disk('public')->url($company->logo_path) : null], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+        <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => $company->company_name, 'description' => $company->seo_description ?: $company->description, 'url' => route('home'), 'logo' => $company->logo_path ? asset('storage/'.$company->logo_path) : null], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
         <header class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
             <a href="#top" class="flex items-center gap-3" aria-label="{{ $company->company_name }}">
                 @if ($company->logo_path)
-                    <img src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="Logo {{ $company->company_name }}" class="h-11 w-11 rounded-xl object-contain">
+                    <img src="{{ asset('storage/'.$company->logo_path) }}" alt="Logo {{ $company->company_name }}" class="h-11 w-11 rounded-xl object-contain">
                 @else
                     <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--signal)] text-xl font-bold text-white">{{ mb_strtoupper(mb_substr($company->company_name, 0, 1)) }}</span>
                 @endif
@@ -35,6 +35,7 @@
             <nav class="hidden items-center gap-8 text-sm font-semibold md:flex" aria-label="Navigasi utama">
                 <a href="#layanan" class="transition hover:text-[var(--signal)]">Layanan</a>
                 <a href="{{ route('portfolio.index') }}" class="transition hover:text-[var(--signal)]">Portofolio</a>
+                <a href="{{ route('products.index') }}" class="transition hover:text-[var(--signal)]">Produk</a>
                 <a href="#tentang" class="transition hover:text-[var(--signal)]">Tentang kami</a>
                 <a href="#kontak" class="rounded-full bg-[var(--ink)] px-5 py-3 text-white transition hover:bg-[var(--signal)]">Mulai ngobrol <span aria-hidden="true">↗</span></a>
             </nav>
@@ -61,6 +62,31 @@
                 </div>
             </section>
 
+            <section class="mx-auto max-w-7xl px-6 pb-16 lg:px-10">
+                <div class="flex flex-row  border-t border-[var(--line)]">
+                    <div class="flex-1 py-6 text-center"><p class="display-font text-4xl font-bold">{{ $clientCount }}+</p><p class="mt-1 text-xs font-bold uppercase tracking-[.18em] text-[var(--muted)]">Total klien</p></div>
+                    <div class="flex-1 py-6 text-center"><p class="display-font text-4xl font-bold">{{ $productCount }}+</p><p class="mt-1 text-xs font-bold uppercase tracking-[.18em] text-[var(--muted)]">Total produk</p></div>
+                </div>
+            </section>
+
+            <section id="produk" class="border-y border-[var(--line)] bg-white/60">
+                <div class="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+                    <div class="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Products</p><h2 class="display-font mt-3 text-4xl font-bold tracking-tight">Produk yang siap digunakan.</h2></div><a href="{{ route('products.index') }}" class="w-fit rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--signal)]">Lihat semua produk <span aria-hidden="true">↗</span></a></div>
+                    @if ($products->isNotEmpty())
+                        <div class="grid gap-5 md:grid-cols-3">
+                            @foreach ($products as $product)
+                                <article class="group overflow-hidden border border-[var(--line)] bg-[var(--paper)]">
+                                    <div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($product->image_path)<img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">@endif</div>
+                                    <div class="p-6"><p class="text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">{{ $product->category ?: 'Digital product' }}</p><h3 class="display-font mt-4 text-2xl font-bold">{{ $product->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $product->summary }}</p></div>
+                                </article>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="border border-[var(--line)] bg-[var(--paper)] p-8 text-[var(--muted)]">Belum ada produk yang dipublikasikan.</p>
+                    @endif
+                </div>
+            </section>
+
             <section id="layanan" class="border-y border-[var(--line)] bg-white/60">
                 <div class="mx-auto max-w-7xl px-6 py-20 lg:px-10">
                     <div class="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">What we do</p><h2 class="display-font mt-3 text-4xl font-bold tracking-tight">Teknologi tanpa kerumitan.</h2></div><p class="max-w-sm text-sm leading-6 text-[var(--muted)]">Kami mengubah kebutuhan bisnis menjadi produk digital yang jelas, cepat, dan berdampak.</p></div>
@@ -84,10 +110,10 @@
                     <div class="project-carousel overflow-hidden">
                         <div class="project-track">
                             @foreach ($projects as $project)
-                                <article class="project-card group overflow-hidden border border-[var(--line)] bg-white"><div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($project->image_path)<img src="{{ Storage::disk('public')->url($project->image_path) }}" alt="{{ $project->title }}" class="h-full w-full transition duration-500 {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover group-hover:scale-105' }}">@endif</div><div class="p-6"><div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]"><span>{{ $project->category ?: 'Digital product' }}</span><span>{{ $project->client }}</span></div><h3 class="display-font mt-4 text-2xl font-bold">{{ $project->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p>@if ($project->project_url)<a href="{{ $project->project_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat proyek ↗</a>@endif</div></article>
+                                <article class="project-card group overflow-hidden border border-[var(--line)] bg-white"><div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($project->image_path)<img src="{{ asset('storage/'.$project->image_path) }}" alt="{{ $project->title }}" class="h-full w-full transition duration-500 {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover group-hover:scale-105' }}">@endif</div><div class="p-6"><div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]"><span>{{ $project->category ?: 'Digital product' }}</span><span>{{ $project->client }}</span></div><h3 class="display-font mt-4 text-2xl font-bold">{{ $project->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p>@if ($project->project_url)<a href="{{ $project->project_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat proyek ↗</a>@endif</div></article>
                             @endforeach
                             @foreach ($projects as $project)
-                                <article class="project-card group overflow-hidden border border-[var(--line)] bg-white" aria-hidden="true"><div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($project->image_path)<img src="{{ Storage::disk('public')->url($project->image_path) }}" alt="" class="h-full w-full {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover' }}">@endif</div><div class="p-6"><div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]"><span>{{ $project->category ?: 'Digital product' }}</span><span>{{ $project->client }}</span></div><h3 class="display-font mt-4 text-2xl font-bold">{{ $project->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p></div></article>
+                                <article class="project-card group overflow-hidden border border-[var(--line)] bg-white" aria-hidden="true"><div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($project->image_path)<img src="{{ asset('storage/'.$project->image_path) }}" alt="" class="h-full w-full {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover' }}">@endif</div><div class="p-6"><div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]"><span>{{ $project->category ?: 'Digital product' }}</span><span>{{ $project->client }}</span></div><h3 class="display-font mt-4 text-2xl font-bold">{{ $project->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p></div></article>
                             @endforeach
                         </div>
                     </div>

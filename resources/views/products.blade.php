@@ -3,15 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Portofolio | {{ $company->seo_title ?: $company->company_name }}</title>
+        <title>Produk | {{ $company->seo_title ?: $company->company_name }}</title>
         <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-        <meta name="description" content="{{ $company->seo_description ?: 'Portofolio '.$company->company_name }}">
+        <meta name="description" content="{{ $company->seo_description ?: 'Produk digital '.$company->company_name }}">
         @if ($company->seo_keywords)<meta name="keywords" content="{{ $company->seo_keywords }}">@endif
-        <link rel="canonical" href="{{ route('portfolio.index') }}">
+        <link rel="canonical" href="{{ route('products.index') }}">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="Portofolio | {{ $company->company_name }}">
-        <meta property="og:description" content="{{ $company->seo_description ?: 'Portofolio '.$company->company_name }}">
-        <meta property="og:url" content="{{ route('portfolio.index') }}">
+        <meta property="og:title" content="Produk | {{ $company->company_name }}">
+        <meta property="og:description" content="{{ $company->seo_description ?: 'Produk digital '.$company->company_name }}">
+        <meta property="og:url" content="{{ route('products.index') }}">
         @if ($company->seo_image)<meta property="og:image" content="{{ asset('storage/'.$company->seo_image) }}">@endif
         <meta name="twitter:card" content="summary_large_image">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,52 +33,44 @@
             </a>
             <nav class="flex items-center gap-4 text-sm font-semibold sm:gap-8" aria-label="Navigasi utama">
                 <a href="{{ url('/') }}" class="transition hover:text-[var(--signal)]">Home</a>
-                <a href="{{ url('/') }}#layanan" class="hidden transition hover:text-[var(--signal)] sm:inline">Layanan</a>
-                <a href="{{ route('products.index') }}" class="hidden transition hover:text-[var(--signal)] sm:inline">Produk</a>
+                <a href="{{ route('portfolio.index') }}" class="transition hover:text-[var(--signal)]">Portofolio</a>
                 <a href="{{ url('/') }}#kontak" class="rounded-full bg-[var(--ink)] px-5 py-3 text-white transition hover:bg-[var(--signal)]">Hubungi kami <span aria-hidden="true">↗</span></a>
             </nav>
         </header>
 
         <main>
             <section class="mx-auto max-w-7xl px-6 pb-16 pt-16 lg:px-10 lg:pt-24">
-                <p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Our portfolio</p>
+                <p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Our products</p>
                 <div class="mt-5 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-                    <h1 class="display-font max-w-3xl text-5xl font-bold leading-[.98] tracking-[-.04em] sm:text-7xl">Karya yang dibuat untuk bergerak.</h1>
-                    <p class="max-w-sm text-lg leading-7 text-[var(--muted)]">Jelajahi seluruh proyek, produk, dan kolaborasi yang kami kerjakan.</p>
-                </div>
-                <div class="mt-12 border-y border-[var(--line)] py-6">
-                    <p class="display-font text-4xl font-bold">{{ $clientCount }}+</p>
-                    <p class="mt-1 text-xs font-bold uppercase tracking-[.18em] text-[var(--muted)]">Total klien</p>
+                    <h1 class="display-font max-w-3xl text-5xl font-bold leading-[.98] tracking-[-.04em] sm:text-7xl">Produk digital untuk pekerjaan nyata.</h1>
+                    <p class="max-w-sm text-lg leading-7 text-[var(--muted)]">Jelajahi produk yang kami rancang agar bisnis bekerja lebih cepat, jelas, dan siap berkembang.</p>
                 </div>
             </section>
 
             <section class="mx-auto max-w-7xl px-6 pb-24 lg:px-10">
                 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                    @forelse ($projects as $project)
+                    @forelse ($products as $product)
                         <article class="group overflow-hidden border border-[var(--line)] bg-white">
                             <div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">
-                                @if ($project->image_path)
-                                    <img src="{{ asset('storage/'.$project->image_path) }}" alt="{{ $project->title }}" class="h-full w-full transition duration-500 {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover group-hover:scale-105' }}">
+                                @if ($product->image_path)
+                                    <img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                                 @endif
                             </div>
                             <div class="p-6">
-                                <div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">
-                                    <span>{{ $project->category ?: 'Digital product' }}</span>
-                                    <span>{{ $project->client }}</span>
-                                </div>
-                                <h2 class="display-font mt-4 text-xl font-bold">{{ $project->title }}</h2>
-                                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p>
-                                @if ($project->project_url)
-                                    <a href="{{ $project->project_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat proyek ↗</a>
+                                <p class="text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">{{ $product->category ?: 'Digital product' }}</p>
+                                <h2 class="display-font mt-4 text-xl font-bold">{{ $product->title }}</h2>
+                                <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $product->summary }}</p>
+                                @if ($product->product_url)
+                                    <a href="{{ $product->product_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat produk ↗</a>
                                 @endif
                             </div>
                         </article>
                     @empty
-                        <p class="border border-[var(--line)] bg-white p-8 text-[var(--muted)] sm:col-span-2 xl:col-span-4">Belum ada portofolio yang dipublikasikan.</p>
+                        <p class="border border-[var(--line)] bg-white p-8 text-[var(--muted)] sm:col-span-2 xl:col-span-4">Belum ada produk yang dipublikasikan.</p>
                     @endforelse
                 </div>
-                @if (method_exists($projects, 'links'))
-                    <div class="mt-12">{{ $projects->links() }}</div>
+                @if (method_exists($products, 'links'))
+                    <div class="mt-12">{{ $products->links() }}</div>
                 @endif
             </section>
         </main>
