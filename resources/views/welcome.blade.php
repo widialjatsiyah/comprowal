@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $company->seo_title ?: $company->company_name.' | Digital partner' }}</title>
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <meta name="description" content="{{ $company->seo_description ?: $company->description }}">
         @if ($company->seo_keywords)<meta name="keywords" content="{{ $company->seo_keywords }}">@endif
         <link rel="canonical" href="{{ route('home') }}">

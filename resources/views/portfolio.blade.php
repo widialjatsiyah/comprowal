@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Portofolio | {{ $company->seo_title ?: $company->company_name }}</title>
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <meta name="description" content="{{ $company->seo_description ?: 'Portofolio '.$company->company_name }}">
         @if ($company->seo_keywords)<meta name="keywords" content="{{ $company->seo_keywords }}">@endif
         <link rel="canonical" href="{{ route('portfolio.index') }}">
