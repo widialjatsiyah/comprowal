@@ -13,5 +13,5 @@ class Product extends Model
 
     protected $fillable = ['title', 'category', 'summary', 'description', 'image_path', 'product_url', 'sort_order', 'is_featured', 'is_active'];
 
-    protected $casts = ['is_featured' => 'boolean', 'is_active' => 'boolean'];
+    protected $casts = ['is_featured' => 'boolean', 'is_active' => 'boolean', 'views_count' => 'integer'];
 }

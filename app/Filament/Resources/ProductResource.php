@@ -59,6 +59,7 @@ class ProductResource extends Resource
             TextColumn::make('category')->label('Kategori')->badge(),
             IconColumn::make('is_featured')->label('Unggulan')->boolean(),
             IconColumn::make('is_active')->label('Aktif')->boolean(),
+            TextColumn::make('views_count')->label('Dilihat')->numeric()->sortable(),
         ])->defaultSort('sort_order')->actions([
             EditAction::make(),
             DeleteAction::make(),

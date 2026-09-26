@@ -73,13 +73,15 @@
                 <div class="mx-auto max-w-7xl px-6 py-20 lg:px-10">
                     <div class="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Products</p><h2 class="display-font mt-3 text-4xl font-bold tracking-tight">Produk yang siap digunakan.</h2></div><a href="{{ route('products.index') }}" class="w-fit rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--signal)]">Lihat semua produk <span aria-hidden="true">↗</span></a></div>
                     @if ($products->isNotEmpty())
-                        <div class="grid gap-5 md:grid-cols-3">
-                            @foreach ($products as $product)
-                                <article class="group overflow-hidden border border-[var(--line)] bg-[var(--paper)]">
-                                    <div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($product->image_path)<img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">@endif</div>
-                                    <div class="p-6"><p class="text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">{{ $product->category ?: 'Digital product' }}</p><h3 class="display-font mt-4 text-2xl font-bold">{{ $product->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $product->summary }}</p></div>
-                                </article>
-                            @endforeach
+                        <div class="product-carousel" data-product-count="{{ $products->count() }}">
+                            <div class="product-track">
+                                @foreach ($products as $product)
+                                    <article class="product-card group overflow-hidden border border-[var(--line)] bg-[var(--paper)]">
+                                        <div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($product->image_path)<a href="{{ route('products.show', $product->id) }}" class="block h-full w-full"><img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105"></a>@endif</div>
+                                        <div class="p-6"><p class="text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">{{ $product->category ?: 'Digital product' }}</p><h3 class="display-font mt-4 text-2xl font-bold"><a href="{{ route('products.show', $product->id) }}" class="transition hover:text-[var(--signal)]">{{ $product->title }}</a></h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $product->summary }}</p></div>
+                                    </article>
+                                @endforeach
+                            </div>
                         </div>
                     @else
                         <p class="border border-[var(--line)] bg-[var(--paper)] p-8 text-[var(--muted)]">Belum ada produk yang dipublikasikan.</p>
@@ -107,7 +109,7 @@
             @if ($projects->isNotEmpty())
                 <section id="portofolio" class="mx-auto max-w-7xl px-6 py-24 lg:px-10">
                     <div class="mb-12 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Selected work</p><h2 class="display-font mt-3 text-4xl font-bold tracking-tight">Beberapa karya pilihan.</h2></div><a href="{{ route('portfolio.index') }}" class="w-fit rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--signal)]">Lihat semua portofolio <span aria-hidden="true">↗</span></a></div>
-                    <div class="project-carousel overflow-hidden">
+                    <div class="project-carousel">
                         <div class="project-track">
                             @foreach ($projects as $project)
                                 <article class="project-card group overflow-hidden border border-[var(--line)] bg-white"><div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">@if ($project->image_path)<img src="{{ asset('storage/'.$project->image_path) }}" alt="{{ $project->title }}" class="h-full w-full transition duration-500 {{ ($project->media_type ?? 'image') === 'logo' ? 'object-contain p-12' : 'object-cover group-hover:scale-105' }}">@endif</div><div class="p-6"><div class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]"><span>{{ $project->category ?: 'Digital product' }}</span><span>{{ $project->client }}</span></div><h3 class="display-font mt-4 text-2xl font-bold">{{ $project->title }}</h3><p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $project->summary }}</p>@if ($project->project_url)<a href="{{ $project->project_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat proyek ↗</a>@endif</div></article>
@@ -125,7 +127,7 @@
                     <div class="mx-auto max-w-7xl px-6 lg:px-10">
                         <p class="text-xs font-bold uppercase tracking-[.24em] text-[var(--signal)]">Client voices</p>
                     </div>
-                    <div class="testimonial-carousel mt-10 overflow-hidden" aria-label="Testimonial klien">
+                    <div class="testimonial-carousel mt-10" aria-label="Testimonial klien">
                         <div class="testimonial-track">
                             @foreach ($testimonials as $testimonial)
                                 <figure class="testimonial-card border border-[var(--line)] bg-[var(--paper)] p-7">

@@ -53,12 +53,14 @@
                         <article class="group overflow-hidden border border-[var(--line)] bg-white">
                             <div class="aspect-[16/9] overflow-hidden bg-[var(--mint)]">
                                 @if ($product->image_path)
-                                    <img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                                    <a href="{{ route('products.show', $product->id) }}" class="block h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                                        <img src="{{ asset('storage/'.$product->image_path) }}" alt="{{ $product->title }}" class="h-full w-full object-cover">
+                                    </a>
                                 @endif
                             </div>
                             <div class="p-6">
                                 <p class="text-xs font-bold uppercase tracking-[.16em] text-[var(--signal)]">{{ $product->category ?: 'Digital product' }}</p>
-                                <h2 class="display-font mt-4 text-xl font-bold">{{ $product->title }}</h2>
+                                <h2 class="display-font mt-4 text-xl font-bold"><a href="{{ route('products.show', $product->id) }}" class="transition hover:text-[var(--signal)]">{{ $product->title }}</a></h2>
                                 <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ $product->summary }}</p>
                                 @if ($product->product_url)
                                     <a href="{{ $product->product_url }}" target="_blank" rel="noreferrer" class="mt-5 inline-block text-sm font-bold">Lihat produk ↗</a>

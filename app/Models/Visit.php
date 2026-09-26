@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['visitor_hash', 'path', 'user_agent', 'visited_at'])]
 class Visit extends Model
 {
+    protected $fillable = ['visitor_hash', 'path', 'ip', 'user_agent', 'visited_at'];
+
     protected $casts = ['visited_at' => 'datetime'];
 }

@@ -80,6 +80,22 @@ Route::get('/produk', function () {
     return view('products', compact('company', 'products'));
 })->name('products.index');
 
+Route::get('/produk/{id}', function (int $id) {
+    try {
+        $company = CompanySetting::query()->first();
+        $product = Product::query()->where('is_active', true)->findOrFail($id);
+    } catch (Throwable) {
+        abort(404);
+    }
+
+    $company ??= new CompanySetting([
+        'company_name' => config('app.name', 'Nexa Digital'),
+        'description' => 'Kami membantu bisnis membangun fondasi digital yang cepat, aman, dan siap berkembang.',
+    ]);
+
+    return view('product-detail', compact('company', 'product'));
+})->name('products.show');
+
 Route::post('/contact', function (Request $request) {
     $data = $request->validate([
         'name' => ['required', 'string', 'max:255'],
